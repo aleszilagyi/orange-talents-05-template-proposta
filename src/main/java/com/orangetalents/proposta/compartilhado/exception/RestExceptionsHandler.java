@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 
 @RestControllerAdvice
-public class CommonExceptionsHandler {
+public class RestExceptionsHandler {
     @Autowired
     private MessageSource messageSource;
 
@@ -34,7 +34,7 @@ public class CommonExceptionsHandler {
         return validationErrors;
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ValidationErrorOutputDto handleValidationError(MethodArgumentNotValidException exception) {
         List<ObjectError> globalErrors = exception.getBindingResult().getGlobalErrors();

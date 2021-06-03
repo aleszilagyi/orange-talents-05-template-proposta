@@ -1,6 +1,7 @@
 package com.orangetalents.proposta.geraPropostas;
 
 import com.orangetalents.proposta.compartilhado.validacoes.CpfOrCnpj;
+import com.orangetalents.proposta.compartilhado.validacoes.UniqueValue;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 public class FormPropostaRequest {
     @CpfOrCnpj
     @NotBlank
+    @UniqueValue(domainClass = Proposta.class, fieldName = "documento")
     private String documento;
     @NotBlank
     @Email
