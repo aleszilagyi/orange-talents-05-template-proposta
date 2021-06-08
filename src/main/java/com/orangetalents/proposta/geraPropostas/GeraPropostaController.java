@@ -1,6 +1,7 @@
 package com.orangetalents.proposta.geraPropostas;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.orangetalents.proposta.geraPropostas.restricao.ConsultaRestricao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,8 @@ public class GeraPropostaController {
         Proposta proposta = request.converter();
         repository.save(proposta);
 
-        consultaRestricao.consulta(proposta);
+        StatusAnalise statusAnalise = consultaRestricao.consulta(proposta);
+        proposta.atualizaStatusAnalise(statusAnalise);
 
         URI uriRetorno = UriComponentsBuilder.fromPath("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
         return ResponseEntity.created(uriRetorno).build();

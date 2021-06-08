@@ -18,6 +18,8 @@ import java.util.List;
 public class RestExceptionHandler {
     @Autowired
     private MessageSource messageSource;
+    @Autowired
+    private RetornaTipoDeStatus retornaTipoDeStatus;
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ValidationErrorOutputDto> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
@@ -38,7 +40,7 @@ public class RestExceptionHandler {
 
         ValidationErrorOutputDto errorDto = buildValidationErrors(globalErrors, fieldErrors);
 
-        HttpStatus status = RetornaTipoDeStatus.statusErroDeValidacao(ex);
+        HttpStatus status = retornaTipoDeStatus.statusErroDeValidacao(ex);
 
         return ResponseEntity.status(status).body(errorDto);
     }

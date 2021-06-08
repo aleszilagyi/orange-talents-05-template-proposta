@@ -1,4 +1,4 @@
-package com.orangetalents.proposta.externos;
+package com.orangetalents.proposta.geraPropostas.restricao;
 
 import com.orangetalents.proposta.geraPropostas.Proposta;
 
