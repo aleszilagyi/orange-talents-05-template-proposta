@@ -1,19 +1,19 @@
 package com.orangetalents.proposta.geraPropostas;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.orangetalents.proposta.geraPropostas.endereco.Endereco;
+
+import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 public class Proposta {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
     @NotBlank
     private String documento;
     @NotBlank
@@ -22,13 +22,20 @@ public class Proposta {
     private String nome;
     @NotBlank
     private String sobrenome;
-    @NotBlank
-    private String endereco;
+    @NotNull
+    @Embedded
+    private Endereco endereco;
     @NotNull
     @DecimalMin("0.00")
     private BigDecimal salario;
+    @Enumerated(EnumType.STRING)
+    private StatusAnalise statusAnalise;
 
-    public Proposta(String documento, String email, String nome, String sobrenome, String endereco, BigDecimal salario) {
+    @Deprecated
+    public Proposta() {
+    }
+
+    public Proposta(String documento, String email, String nome, String sobrenome, Endereco endereco, BigDecimal salario) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;
@@ -37,7 +44,19 @@ public class Proposta {
         this.salario = salario;
     }
 
-    public Long getId() {
+    public void atualizaStatusAnalise(StatusAnalise statusAnalise) {
+        this.statusAnalise = statusAnalise;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public UUID getId() {
         return id;
+    }
+
+    public String getNomeCompleto() {
+        return nome + " " + sobrenome;
     }
 }

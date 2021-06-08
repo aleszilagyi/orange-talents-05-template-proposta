@@ -1,5 +1,7 @@
 package com.orangetalents.proposta.compartilhado.validacoes;
 
+import com.orangetalents.proposta.externos.ConsultaDadosSolicitante;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
