@@ -1,12 +1,15 @@
 package com.orangetalents.proposta.geraPropostas;
 
 import com.orangetalents.proposta.geraPropostas.endereco.Endereco;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -30,6 +33,12 @@ public class Proposta {
     private BigDecimal salario;
     @Enumerated(EnumType.STRING)
     private StatusAnalise statusAnalise;
+    @Column(nullable = true, updatable = true)
+    private String numeroCartao;
+    @CreationTimestamp
+    private LocalDateTime momentoCriacao = LocalDateTime.now();
+    @UpdateTimestamp
+    private LocalDateTime ultimaAlteracao;
 
     @Deprecated
     public Proposta() {
@@ -44,10 +53,6 @@ public class Proposta {
         this.salario = salario;
     }
 
-    public void atualizaStatusAnalise(StatusAnalise statusAnalise) {
-        this.statusAnalise = statusAnalise;
-    }
-
     public String getDocumento() {
         return documento;
     }
@@ -58,5 +63,13 @@ public class Proposta {
 
     public String getNomeCompleto() {
         return nome + " " + sobrenome;
+    }
+
+    public void atualizaStatusAnalise(StatusAnalise statusAnalise) {
+        this.statusAnalise = statusAnalise;
+    }
+
+    public void atualizaNumeroCartao(String numeroCartao) {
+        this.numeroCartao = numeroCartao;
     }
 }

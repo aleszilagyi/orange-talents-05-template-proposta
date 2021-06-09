@@ -1,4 +1,4 @@
-package com.orangetalents.proposta.geraPropostas.restricao;
+package com.orangetalents.proposta.servicosExternos.analiseFinanceira;
 
 import com.orangetalents.proposta.geraPropostas.StatusAnalise;
 

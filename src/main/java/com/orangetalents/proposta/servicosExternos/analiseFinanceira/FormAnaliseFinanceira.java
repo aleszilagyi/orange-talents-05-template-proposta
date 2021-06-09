@@ -1,10 +1,10 @@
-package com.orangetalents.proposta.geraPropostas.restricao;
+package com.orangetalents.proposta.servicosExternos.analiseFinanceira;
 
 import com.orangetalents.proposta.geraPropostas.Proposta;
 
 import javax.validation.constraints.NotBlank;
 
-public class FormAnalise {
+public class FormAnaliseFinanceira {
     @NotBlank
     private String documento;
     @NotBlank
@@ -14,16 +14,16 @@ public class FormAnalise {
     private StatusRestricao resultadoSolicitacao;
 
     @Deprecated
-    public FormAnalise() {
+    public FormAnaliseFinanceira() {
     }
 
-    public FormAnalise(Proposta proposta) {
+    public FormAnaliseFinanceira(Proposta proposta) {
         this.documento = proposta.getDocumento();
         this.nome = proposta.getNomeCompleto();
         this.idProposta = proposta.getId().toString();
     }
 
-    public FormAnalise(String documento, String nome, String idProposta, StatusRestricao resultadoSolicitacao) {
+    public FormAnaliseFinanceira(String documento, String nome, String idProposta, StatusRestricao resultadoSolicitacao) {
         this.documento = documento;
         this.nome = nome;
         this.idProposta = idProposta;

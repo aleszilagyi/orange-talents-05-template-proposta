@@ -1,7 +1,7 @@
 package com.orangetalents.proposta.geraPropostas;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.orangetalents.proposta.geraPropostas.restricao.ConsultaRestricao;
+import com.orangetalents.proposta.servicosExternos.analiseFinanceira.ConsultaRestricao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

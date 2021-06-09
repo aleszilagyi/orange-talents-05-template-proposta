@@ -1,9 +1,7 @@
-package com.orangetalents.proposta.geraPropostas.restricao;
+package com.orangetalents.proposta.servicosExternos.analiseFinanceira;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.orangetalents.proposta.externos.ConsultaDadosSolicitante;
-import com.orangetalents.proposta.externos.UsuarioComRestricaoException;
 import com.orangetalents.proposta.geraPropostas.Proposta;
 import com.orangetalents.proposta.geraPropostas.StatusAnalise;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +15,15 @@ public class ConsultaRestricao {
     private ConsultaDadosSolicitante consultaDadosSolicitante;
 
     public StatusAnalise consulta(Proposta proposta) throws JsonProcessingException {
-        FormAnalise analiseDeRestricaoRequest = new FormAnalise(proposta);
+        FormAnaliseFinanceira analiseDeRestricaoRequest = new FormAnaliseFinanceira(proposta);
 
         try {
-            ResponseEntity<FormAnalise> restricaoResponse = consultaDadosSolicitante.consultaRestricaoSolicitante(analiseDeRestricaoRequest);
+            ResponseEntity<FormAnaliseFinanceira> restricaoResponse = consultaDadosSolicitante.consultaRestricaoSolicitante(analiseDeRestricaoRequest);
             return restricaoResponse.getBody().getResultadoSolicitacao().normalizaStatus();
         } catch (UsuarioComRestricaoException e) {
             HttpStatus status = HttpStatus.valueOf(e.status());
             String body = e.contentUTF8();
-            FormAnalise payload = new ObjectMapper().readValue(body, FormAnalise.class);
+            FormAnaliseFinanceira payload = new ObjectMapper().readValue(body, FormAnaliseFinanceira.class);
             return payload.getResultadoSolicitacao().normalizaStatus();
         }
     }
