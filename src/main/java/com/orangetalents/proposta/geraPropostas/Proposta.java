@@ -38,7 +38,7 @@ public class Proposta {
     @CreationTimestamp
     private LocalDateTime momentoCriacao = LocalDateTime.now();
     @UpdateTimestamp
-    private LocalDateTime ultimaAlteracao;
+    private LocalDateTime ultimaAtualizacao;
 
     @Deprecated
     public Proposta() {
@@ -71,5 +71,41 @@ public class Proposta {
 
     public void atualizaNumeroCartao(String numeroCartao) {
         this.numeroCartao = numeroCartao;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
+    public StatusAnalise getStatusAnalise() {
+        return statusAnalise;
+    }
+
+    public String getNumeroCartao() {
+        return numeroCartao;
+    }
+
+    public LocalDateTime getMomentoCriacao() {
+        return momentoCriacao;
+    }
+
+    public LocalDateTime getUltimaAtualizacao() {
+        return ultimaAtualizacao;
     }
 }

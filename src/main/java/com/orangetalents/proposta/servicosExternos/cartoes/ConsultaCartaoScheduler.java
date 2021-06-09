@@ -3,6 +3,7 @@ package com.orangetalents.proposta.servicosExternos.cartoes;
 import com.orangetalents.proposta.geraPropostas.Proposta;
 import com.orangetalents.proposta.geraPropostas.PropostaRepository;
 import com.orangetalents.proposta.geraPropostas.StatusAnalise;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
@@ -28,16 +29,18 @@ public class ConsultaCartaoScheduler {
         if (!propostaEmAberto.isEmpty()) {
             salvaNumeroCartao(propostaEmAberto);
         }
-        Thread.currentThread().interrupt();
     }
 
     @Async
     private void salvaNumeroCartao(List<Proposta> propostaEmAberto) {
-        propostaEmAberto.forEach(proposta -> {
-            ResponseEntity<InformacoesCartaoResponse> informacoesCartao = consultaCartao.consultaRestricaoSolicitante(proposta.getId().toString());
-            String numeroCartao = informacoesCartao.getBody().getId();
-            proposta.atualizaNumeroCartao(numeroCartao);
-        });
+        try {
+            propostaEmAberto.forEach(proposta -> {
+                ResponseEntity<InformacoesCartaoResponse> informacoesCartao = consultaCartao.consultaRestricaoSolicitante(proposta.getId().toString());
+                String numeroCartao = informacoesCartao.getBody().getId();
+                proposta.atualizaNumeroCartao(numeroCartao);
+            });
+        } catch (FeignException e) {
+        }
         Thread.currentThread().interrupt();
     }
 }

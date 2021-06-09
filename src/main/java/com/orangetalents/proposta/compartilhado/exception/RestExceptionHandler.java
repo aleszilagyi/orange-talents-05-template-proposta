@@ -1,8 +1,8 @@
 package com.orangetalents.proposta.compartilhado.exception;
 
+import com.orangetalents.proposta.compartilhado.exception.httpException.RecursoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -21,6 +21,11 @@ public class RestExceptionHandler {
     @Autowired
     private RetornaTipoDeStatus retornaTipoDeStatus;
 
+    @ExceptionHandler(RecursoNotFoundException.class)
+    public ResponseEntity handleRecursoNotFoundException(RecursoNotFoundException ex) {
+        return ResponseEntity.status(ex.getStatusCode()).body(ex.getStatusText());
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ValidationErrorOutputDto> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         String message = "erro de formatação da requisição";
@@ -38,26 +43,11 @@ public class RestExceptionHandler {
         List<ObjectError> globalErrors = ex.getBindingResult().getGlobalErrors();
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
 
-        ValidationErrorOutputDto errorDto = buildValidationErrors(globalErrors, fieldErrors);
+        ValidationErrorOutputDto errorDto = BuildValidationErrors.build(messageSource, globalErrors, fieldErrors);
 
         HttpStatus status = retornaTipoDeStatus.statusErroDeValidacao(ex);
 
         return ResponseEntity.status(status).body(errorDto);
-    }
-
-    private ValidationErrorOutputDto buildValidationErrors(List<ObjectError> globalErrors, List<FieldError> fieldErrors) {
-        ValidationErrorOutputDto validationErrors = new ValidationErrorOutputDto();
-
-        globalErrors.forEach(error -> validationErrors.addError(getErrorMessage(error)));
-        fieldErrors.forEach(error -> {
-            String errorMessage = getErrorMessage(error);
-            validationErrors.addFieldError(error.getField(), errorMessage);
-        });
-        return validationErrors;
-    }
-
-    private String getErrorMessage(ObjectError error) {
-        return messageSource.getMessage(error, LocaleContextHolder.getLocale());
     }
 }
 
