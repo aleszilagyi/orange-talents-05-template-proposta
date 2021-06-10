@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 
-import java.io.IOException;
-
 @PropertySource("classpath:application.properties")
 public class CustomErrorDecoder implements ErrorDecoder {
     @Value("${cartao.host}")
@@ -17,7 +15,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String s, Response response) {
-        if (response.status() == 404 && response.request().url().contains(cartaoServiceUrl)) {
+        if (response.status() == 404 && response.request().url().contains(cartaoServiceUrl + "/api/cartoes/")) {
             try {
                 return new CartaoNaoExisteException(HttpStatus.valueOf(response.status()), "Cartão não encontrado");
             } catch (FeignException e) {
