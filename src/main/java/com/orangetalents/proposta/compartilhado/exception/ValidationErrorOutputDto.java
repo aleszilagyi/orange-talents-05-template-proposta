@@ -1,5 +1,10 @@
 package com.orangetalents.proposta.compartilhado.exception;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,5 +27,20 @@ public class ValidationErrorOutputDto {
 
     public List<FieldErrorOutputDto> getFieldErrors() {
         return fieldErrors;
+    }
+
+    public ValidationErrorOutputDto() {
+    }
+
+    public ValidationErrorOutputDto(MessageSource messageSource, List<ObjectError> globalErrors, List<FieldError> fieldErrors) {
+        globalErrors.forEach(error -> addError(getErrorMessage(messageSource, error)));
+        fieldErrors.forEach(error -> {
+            String errorMessage = getErrorMessage(messageSource, error);
+            addFieldError(error.getField(), errorMessage);
+        });
+    }
+
+    private String getErrorMessage(MessageSource messageSource, ObjectError error) {
+        return messageSource.getMessage(error, LocaleContextHolder.getLocale());
     }
 }

@@ -1,6 +1,5 @@
 package com.orangetalents.proposta.compartilhado.exception;
 
-import com.orangetalents.proposta.compartilhado.exception.httpException.RecursoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -21,21 +21,19 @@ public class RestExceptionHandler {
     @Autowired
     private RetornaTipoDeStatus retornaTipoDeStatus;
 
-    @ExceptionHandler(RecursoNotFoundException.class)
-    public ResponseEntity handleRecursoNotFoundException(RecursoNotFoundException ex) {
-        return ResponseEntity.status(ex.getStatusCode()).body(ex.getStatusText());
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity handleRecursoNotFoundException(ResponseStatusException ex) {
+        return ResponseEntity.status(ex.getStatus()).body(ex.getReason());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ValidationErrorOutputDto> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
-        String message = "erro de formatação da requisição";
+        String message = "Erro de formatação da requisição";
 
         ValidationErrorOutputDto validationErrors = new ValidationErrorOutputDto();
         validationErrors.addError(message);
 
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-
-        return ResponseEntity.status(status).body(validationErrors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationErrors);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -43,7 +41,7 @@ public class RestExceptionHandler {
         List<ObjectError> globalErrors = ex.getBindingResult().getGlobalErrors();
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
 
-        ValidationErrorOutputDto errorDto = BuildValidationErrors.build(messageSource, globalErrors, fieldErrors);
+        ValidationErrorOutputDto errorDto = new ValidationErrorOutputDto(messageSource, globalErrors, fieldErrors);
 
         HttpStatus status = retornaTipoDeStatus.statusErroDeValidacao(ex);
 

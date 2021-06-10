@@ -1,5 +1,6 @@
 package com.orangetalents.proposta.servicosExternos.cartoes;
 
+import com.orangetalents.proposta.compartilhado.exception.httpException.ErroInternoException;
 import com.orangetalents.proposta.geraPropostas.Proposta;
 import com.orangetalents.proposta.geraPropostas.PropostaRepository;
 import com.orangetalents.proposta.geraPropostas.StatusAnalise;
@@ -40,6 +41,7 @@ public class ConsultaCartaoScheduler {
                 proposta.atualizaNumeroCartao(numeroCartao);
             });
         } catch (FeignException e) {
+            throw new ErroInternoException();
         }
         Thread.currentThread().interrupt();
     }

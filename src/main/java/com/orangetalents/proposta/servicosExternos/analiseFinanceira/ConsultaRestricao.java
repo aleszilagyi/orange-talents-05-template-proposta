@@ -2,8 +2,10 @@ package com.orangetalents.proposta.servicosExternos.analiseFinanceira;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.orangetalents.proposta.compartilhado.exception.httpException.ErroInternoException;
 import com.orangetalents.proposta.geraPropostas.Proposta;
 import com.orangetalents.proposta.geraPropostas.StatusAnalise;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ public class ConsultaRestricao {
             String body = e.contentUTF8();
             FormAnaliseFinanceira payload = new ObjectMapper().readValue(body, FormAnaliseFinanceira.class);
             return payload.getResultadoSolicitacao().normalizaStatus();
+        } catch (FeignException e) {
+            throw new ErroInternoException();
         }
     }
 }
