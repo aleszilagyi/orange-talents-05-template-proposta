@@ -1,4 +1,4 @@
-package com.orangetalents.proposta.geraPropostas.endereco;
+package com.orangetalents.proposta.propostas.endereco;
 
 public class EnderecoDto {
     private String logradouro;

@@ -1,6 +1,6 @@
-package com.orangetalents.proposta.geraPropostas;
+package com.orangetalents.proposta.propostas;
 
-import com.orangetalents.proposta.geraPropostas.endereco.Endereco;
+import com.orangetalents.proposta.propostas.endereco.Endereco;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 

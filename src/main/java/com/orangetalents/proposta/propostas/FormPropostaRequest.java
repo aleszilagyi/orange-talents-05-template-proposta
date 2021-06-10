@@ -1,8 +1,8 @@
-package com.orangetalents.proposta.geraPropostas;
+package com.orangetalents.proposta.propostas;
 
 import com.orangetalents.proposta.compartilhado.validacoes.CpfOrCnpj;
 import com.orangetalents.proposta.compartilhado.validacoes.UniqueValue;
-import com.orangetalents.proposta.geraPropostas.endereco.FormEnderecoRequest;
+import com.orangetalents.proposta.propostas.endereco.FormEnderecoRequest;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;

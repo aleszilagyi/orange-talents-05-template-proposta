@@ -1,4 +1,4 @@
-package com.orangetalents.proposta.geraPropostas.endereco;
+package com.orangetalents.proposta.propostas.endereco;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

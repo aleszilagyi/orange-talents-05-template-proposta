@@ -1,6 +1,6 @@
 package com.orangetalents.proposta.servicosExternos.analiseFinanceira;
 
-import com.orangetalents.proposta.geraPropostas.StatusAnalise;
+import com.orangetalents.proposta.propostas.StatusAnalise;
 
 public enum StatusRestricao {
     COM_RESTRICAO, SEM_RESTRICAO;

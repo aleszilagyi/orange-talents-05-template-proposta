@@ -1,4 +1,4 @@
-package com.orangetalents.proposta.geraPropostas;
+package com.orangetalents.proposta.propostas;
 
 import com.orangetalents.proposta.compartilhado.exception.httpException.RecursoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

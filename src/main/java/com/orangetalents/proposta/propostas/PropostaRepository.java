@@ -1,4 +1,4 @@
-package com.orangetalents.proposta.geraPropostas;
+package com.orangetalents.proposta.propostas;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

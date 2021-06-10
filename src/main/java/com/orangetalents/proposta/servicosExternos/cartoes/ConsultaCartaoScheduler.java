@@ -1,9 +1,9 @@
 package com.orangetalents.proposta.servicosExternos.cartoes;
 
 import com.orangetalents.proposta.compartilhado.exception.httpException.ErroInternoException;
-import com.orangetalents.proposta.geraPropostas.Proposta;
-import com.orangetalents.proposta.geraPropostas.PropostaRepository;
-import com.orangetalents.proposta.geraPropostas.StatusAnalise;
+import com.orangetalents.proposta.propostas.Proposta;
+import com.orangetalents.proposta.propostas.PropostaRepository;
+import com.orangetalents.proposta.propostas.StatusAnalise;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;

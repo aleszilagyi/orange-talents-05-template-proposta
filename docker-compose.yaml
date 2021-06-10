@@ -158,8 +158,21 @@ services:
     depends_on:
       - postgres
 
+  biometria-postgres:
+    image: 'postgres:alpine'
+    volumes:
+      - biometria-postgres-volume:/var/lib/postgresql/data
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: proposta_db
+      POSTGRES_HOST: postgres
+
 volumes:
   grafana-volume:
   prometheus-volume:
   postgres-volume:
   proposta-postgres-volume:
+  biometria-postgres-volume:

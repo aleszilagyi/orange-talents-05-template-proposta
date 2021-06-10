@@ -1,4 +1,4 @@
-package com.orangetalents.proposta.geraPropostas;
+package com.orangetalents.proposta.propostas;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.orangetalents.proposta.servicosExternos.analiseFinanceira.ConsultaRestricao;

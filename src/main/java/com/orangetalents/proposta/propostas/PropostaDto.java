@@ -1,6 +1,6 @@
-package com.orangetalents.proposta.geraPropostas;
+package com.orangetalents.proposta.propostas;
 
-import com.orangetalents.proposta.geraPropostas.endereco.EnderecoDto;
+import com.orangetalents.proposta.propostas.endereco.EnderecoDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

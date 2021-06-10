@@ -1,6 +1,6 @@
 package com.orangetalents.proposta.servicosExternos.analiseFinanceira;
 
-import com.orangetalents.proposta.geraPropostas.Proposta;
+import com.orangetalents.proposta.propostas.Proposta;
 
 import javax.validation.constraints.NotBlank;
 
