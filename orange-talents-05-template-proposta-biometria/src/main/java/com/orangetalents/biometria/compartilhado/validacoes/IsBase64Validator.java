@@ -6,9 +6,9 @@ import javax.xml.bind.DatatypeConverter;
 
 public class IsBase64Validator implements ConstraintValidator<IsBase64, String> {
     @Override
-    public boolean isValid(String byteBase64, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String stringBase64, ConstraintValidatorContext constraintValidatorContext) {
         try {
-            DatatypeConverter.parseBase64Binary(byteBase64);
+            DatatypeConverter.parseBase64Binary(stringBase64);
             return true;
         } catch (Exception e) {
             return false;

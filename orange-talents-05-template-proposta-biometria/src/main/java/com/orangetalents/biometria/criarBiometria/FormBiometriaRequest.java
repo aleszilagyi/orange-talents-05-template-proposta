@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class FormBiometriaRequest {
     @CartaoExiste
     @NotBlank
-    @UniqueValue(domainClass = Biometria.class, fieldName = "numeroCartao")
+    @UniqueValue(domainClass = Biometria.class, fieldName = "numeroCartao", message = "fingerprint(s) já registrado(s)")
     private String numeroCartao;
     @NotNull
     private List<@NotNull @IsBase64 String> fingerprint;
