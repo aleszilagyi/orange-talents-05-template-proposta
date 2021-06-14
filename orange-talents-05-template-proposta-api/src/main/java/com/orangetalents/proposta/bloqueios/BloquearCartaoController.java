@@ -1,10 +1,9 @@
 package com.orangetalents.proposta.bloqueios;
 
 import com.orangetalents.proposta.servicosExternos.cartoes.BloquearCartao;
-import com.orangetalents.proposta.servicosExternos.cartoes.ConsultaCartao;
-import com.orangetalents.proposta.servicosExternos.cartoes.SistemaResponsavel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +12,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/bloquear")
+@Validated
 public class BloquearCartaoController {
     @Autowired
     private BloqueioRepository repository;
@@ -24,9 +24,8 @@ public class BloquearCartaoController {
     public ResponseEntity bloquear(@PathVariable("id") String idCartao, Principal principal, HttpServletRequest request) {
         String userIp = request.getRemoteAddr();
         String userAgent = principal.getName();
-        StatusBloqueio statusBloqueio = bloquearCartao.bloquearCartao(idCartao);
 
-        FormBloquearCartao formBloquearCartao = new FormBloquearCartao(idCartao, userIp, userAgent, statusBloqueio);
+        FormBloquearCartao formBloquearCartao = bloquearCartao.bloquear(userIp, userAgent, idCartao);
         BloqueioCartao bloqueioCartao = formBloquearCartao.converter();
         repository.save(bloqueioCartao);
 

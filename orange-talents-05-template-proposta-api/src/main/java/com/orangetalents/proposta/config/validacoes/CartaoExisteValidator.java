@@ -1,8 +1,6 @@
 package com.orangetalents.proposta.config.validacoes;
 
-import com.orangetalents.proposta.config.exception.CartaoNaoExisteException;
 import com.orangetalents.proposta.config.exception.httpException.ErroInternoException;
-import com.orangetalents.proposta.config.exception.httpException.RecursoNotFoundException;
 import com.orangetalents.proposta.servicosExternos.cartoes.ConsultaCartao;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +16,6 @@ public class CartaoExisteValidator implements ConstraintValidator<CartaoExiste, 
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
         try {
             String idCartao = consultaCartao.consultaCartao(s).getBody().getId();
-        } catch (CartaoNaoExisteException e) {
-            throw new RecursoNotFoundException();
         } catch (FeignException e) {
             throw new ErroInternoException();
         }
