@@ -17,10 +17,10 @@ public class FormAnaliseFinanceira {
     public FormAnaliseFinanceira() {
     }
 
-    public FormAnaliseFinanceira(Proposta proposta) {
-        this.documento = proposta.getDocumento();
-        this.nome = proposta.getNomeCompleto();
-        this.idProposta = proposta.getId().toString();
+    public FormAnaliseFinanceira(String documento, String nome, String idProposta) {
+        this.documento = documento;
+        this.nome = nome;
+        this.idProposta = idProposta;
     }
 
     public FormAnaliseFinanceira(String documento, String nome, String idProposta, StatusRestricao resultadoSolicitacao) {

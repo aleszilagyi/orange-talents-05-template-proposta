@@ -19,6 +19,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
             try {
                 return new CartaoNaoExisteException(HttpStatus.valueOf(response.status()), "Cartão não encontrado");
             } catch (FeignException e) {
+                e.printStackTrace();
                 return e;
             }
         } else return defaultErrorDecoder.decode(s, response);

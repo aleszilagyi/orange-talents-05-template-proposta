@@ -16,12 +16,12 @@ public class PropostaDto {
     private BigDecimal salario;
     private StatusAnalise statusAnalise;
     private String numeroCartao;
-    private LocalDateTime momentoCriacao = LocalDateTime.now();
+    private LocalDateTime momentoCriacao;
     private LocalDateTime ultimaAtualizacao;
 
-    public PropostaDto(Proposta proposta) {
+    public PropostaDto(Proposta proposta, String documentoDecrypted) {
         this.id = proposta.getId();
-        this.documento = proposta.getDocumento();
+        this.documento = documentoDecrypted;
         this.email = proposta.getEmail();
         this.nome = proposta.getNome();
         this.sobrenome = proposta.getSobrenome();

@@ -11,17 +11,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
+import java.security.Principal;
 
 @RestController
-@RequestMapping("/biometria")
+@RequestMapping("/api/biometria")
 public class BiometriaController {
     @Autowired
     private BiometriaRepository repository;
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastra(@RequestBody @Valid FormBiometriaRequest request) {
-        Biometria biometria = request.converter();
+    public ResponseEntity cadastra(@RequestBody @Valid FormBiometriaRequest request, Principal principal) {
+        String userAgent = principal.getName();
+        Biometria biometria = request.converter(userAgent);
         repository.save(biometria);
 
         URI uriRetorno = UriComponentsBuilder.fromPath("/biometria/{id}").buildAndExpand(biometria.getId()).toUri();

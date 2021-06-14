@@ -1,7 +1,7 @@
 package com.orangetalents.proposta.propostas;
 
-import com.orangetalents.proposta.compartilhado.validacoes.CpfOrCnpj;
-import com.orangetalents.proposta.compartilhado.validacoes.UniqueValue;
+import com.orangetalents.proposta.config.validacoes.CpfOrCnpj;
+import com.orangetalents.proposta.config.validacoes.UniqueDocumento;
 import com.orangetalents.proposta.propostas.endereco.FormEnderecoRequest;
 
 import javax.validation.constraints.DecimalMin;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class FormPropostaRequest {
     @CpfOrCnpj
     @NotBlank
-    @UniqueValue(domainClass = Proposta.class, fieldName = "documento")
+    @UniqueDocumento
     private String documento;
     @NotBlank
     @Email
@@ -37,7 +37,11 @@ public class FormPropostaRequest {
         this.salario = salario;
     }
 
-    public Proposta converter() {
-        return new Proposta(documento, email, nome, sobrenome, endereco.converter(), salario);
+    public Proposta converter(String userAgent, String documentoEncodado) {
+        return new Proposta(userAgent, documentoEncodado, email, nome, sobrenome, endereco.converter(), salario);
+    }
+
+    public String getDocumento() {
+        return documento;
     }
 }

@@ -1,8 +1,8 @@
 package com.orangetalents.biometria.criarBiometria;
 
-import com.orangetalents.biometria.compartilhado.validacoes.CartaoExiste;
-import com.orangetalents.biometria.compartilhado.validacoes.IsBase64;
-import com.orangetalents.biometria.compartilhado.validacoes.UniqueValue;
+import com.orangetalents.biometria.config.validacoes.CartaoExiste;
+import com.orangetalents.biometria.config.validacoes.IsBase64;
+import com.orangetalents.biometria.config.validacoes.UniqueValue;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -22,8 +22,8 @@ public class FormBiometriaRequest {
         this.fingerprint = fingerprint;
     }
 
-    public Biometria converter() {
-        return new Biometria(numeroCartao, transformaEmByte());
+    public Biometria converter(String userAgent) {
+        return new Biometria(userAgent, numeroCartao, transformaEmByte());
     }
 
     private List<byte[]> transformaEmByte() {

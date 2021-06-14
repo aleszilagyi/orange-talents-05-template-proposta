@@ -17,6 +17,8 @@ public class Biometria {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @NotBlank
+    private String userAgent;
+    @NotBlank
     private String numeroCartao;
     @NotNull
     @ElementCollection
@@ -30,7 +32,8 @@ public class Biometria {
     public Biometria() {
     }
 
-    public Biometria(String numeroCartao, @NotNull List<byte[]> fingerprint) {
+    public Biometria(String userAgent, String numeroCartao, @NotNull List<byte[]> fingerprint) {
+        this.userAgent = userAgent;
         this.numeroCartao = numeroCartao;
         this.fingerprint.addAll(fingerprint);
     }

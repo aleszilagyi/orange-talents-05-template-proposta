@@ -1,6 +1,6 @@
 package com.orangetalents.proposta.propostas;
 
-import com.orangetalents.proposta.compartilhado.exception.httpException.RecursoNotFoundException;
+import com.orangetalents.proposta.config.exception.httpException.RecursoNotFoundException;
 
 import java.util.UUID;
 
@@ -9,6 +9,7 @@ public class VerificaIdPropostaExiste {
         try {
             return UUID.fromString(idProposta);
         } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             throw new RecursoNotFoundException();
         }
     }

@@ -18,6 +18,8 @@ public class Proposta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @NotBlank
+    private String userAgent;
+    @NotBlank
     private String documento;
     @NotBlank
     private String email;
@@ -44,7 +46,8 @@ public class Proposta {
     public Proposta() {
     }
 
-    public Proposta(String documento, String email, String nome, String sobrenome, Endereco endereco, BigDecimal salario) {
+    public Proposta(String userAgent, String documento, String email, String nome, String sobrenome, Endereco endereco, BigDecimal salario) {
+        this.userAgent = userAgent;
         this.documento = documento;
         this.email = email;
         this.nome = nome;
@@ -108,4 +111,5 @@ public class Proposta {
     public LocalDateTime getUltimaAtualizacao() {
         return ultimaAtualizacao;
     }
+
 }
