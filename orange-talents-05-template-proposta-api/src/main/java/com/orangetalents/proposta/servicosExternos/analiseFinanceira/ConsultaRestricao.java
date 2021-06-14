@@ -2,6 +2,7 @@ package com.orangetalents.proposta.servicosExternos.analiseFinanceira;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.orangetalents.proposta.config.exception.UsuarioComRestricaoException;
 import com.orangetalents.proposta.config.exception.httpException.ErroInternoException;
 import com.orangetalents.proposta.propostas.StatusAnalise;
 import feign.FeignException;

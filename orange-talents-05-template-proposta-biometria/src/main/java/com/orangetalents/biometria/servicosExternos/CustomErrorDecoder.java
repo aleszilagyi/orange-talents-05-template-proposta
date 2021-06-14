@@ -1,5 +1,6 @@
 package com.orangetalents.biometria.servicosExternos;
 
+import com.orangetalents.biometria.servicosExternos.cartoes.CartaoNaoExisteException;
 import feign.FeignException;
 import feign.Response;
 import feign.codec.ErrorDecoder;

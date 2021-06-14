@@ -22,8 +22,8 @@ public class FormBiometriaRequest {
         this.fingerprint = fingerprint;
     }
 
-    public Biometria converter(String userAgent) {
-        return new Biometria(userAgent, numeroCartao, transformaEmByte());
+    public Biometria converter(String userIp, String userAgent) {
+        return new Biometria(userIp, userAgent, numeroCartao, transformaEmByte());
     }
 
     private List<byte[]> transformaEmByte() {

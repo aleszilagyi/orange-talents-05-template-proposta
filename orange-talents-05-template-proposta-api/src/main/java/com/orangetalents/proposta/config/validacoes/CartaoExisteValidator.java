@@ -1,9 +1,9 @@
-package com.orangetalents.biometria.config.validacoes;
+package com.orangetalents.proposta.config.validacoes;
 
-import com.orangetalents.biometria.config.exception.httpException.ErroInternoException;
-import com.orangetalents.biometria.config.exception.httpException.RecursoNotFoundException;
-import com.orangetalents.biometria.servicosExternos.cartoes.CartaoNaoExisteException;
-import com.orangetalents.biometria.servicosExternos.cartoes.ConsultaCartao;
+import com.orangetalents.proposta.config.exception.CartaoNaoExisteException;
+import com.orangetalents.proposta.config.exception.httpException.ErroInternoException;
+import com.orangetalents.proposta.config.exception.httpException.RecursoNotFoundException;
+import com.orangetalents.proposta.servicosExternos.cartoes.ConsultaCartao;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 

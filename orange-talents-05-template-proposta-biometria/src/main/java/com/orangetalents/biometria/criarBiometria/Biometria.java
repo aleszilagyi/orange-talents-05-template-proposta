@@ -19,6 +19,8 @@ public class Biometria {
     @NotBlank
     private String userAgent;
     @NotBlank
+    private String userIp;
+    @NotBlank
     private String numeroCartao;
     @NotNull
     @ElementCollection
@@ -32,7 +34,8 @@ public class Biometria {
     public Biometria() {
     }
 
-    public Biometria(String userAgent, String numeroCartao, @NotNull List<byte[]> fingerprint) {
+    public Biometria(String userIp, String userAgent, String numeroCartao, @NotNull List<byte[]> fingerprint) {
+        this.userIp = userIp;
         this.userAgent = userAgent;
         this.numeroCartao = numeroCartao;
         this.fingerprint.addAll(fingerprint);

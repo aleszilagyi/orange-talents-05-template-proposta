@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
@@ -21,9 +22,10 @@ public class BiometriaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastra(@RequestBody @Valid FormBiometriaRequest request, Principal principal) {
+    public ResponseEntity cadastra(@RequestBody @Valid FormBiometriaRequest formRequest, Principal principal, HttpServletRequest request) {
+        String userIp = request.getRemoteAddr();
         String userAgent = principal.getName();
-        Biometria biometria = request.converter(userAgent);
+        Biometria biometria = formRequest.converter(userIp, userAgent);
         repository.save(biometria);
 
         URI uriRetorno = UriComponentsBuilder.fromPath("/biometria/{id}").buildAndExpand(biometria.getId()).toUri();

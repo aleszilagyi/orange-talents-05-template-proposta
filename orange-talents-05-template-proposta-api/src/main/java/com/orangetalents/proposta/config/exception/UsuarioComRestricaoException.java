@@ -1,4 +1,4 @@
-package com.orangetalents.proposta.servicosExternos.analiseFinanceira;
+package com.orangetalents.proposta.config.exception;
 
 import feign.FeignException;
 import feign.Request;

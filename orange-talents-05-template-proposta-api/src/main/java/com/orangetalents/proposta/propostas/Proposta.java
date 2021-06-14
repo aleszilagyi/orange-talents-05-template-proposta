@@ -13,10 +13,13 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Table(name = "proposta")
 public class Proposta {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @NotBlank
+    private String userIp;
     @NotBlank
     private String userAgent;
     @NotBlank
@@ -46,8 +49,9 @@ public class Proposta {
     public Proposta() {
     }
 
-    public Proposta(String userAgent, String documento, String email, String nome, String sobrenome, Endereco endereco, BigDecimal salario) {
+    public Proposta(String userAgent, String userIp, String documento, String email, String nome, String sobrenome, Endereco endereco, BigDecimal salario) {
         this.userAgent = userAgent;
+        this.userIp = userIp;
         this.documento = documento;
         this.email = email;
         this.nome = nome;

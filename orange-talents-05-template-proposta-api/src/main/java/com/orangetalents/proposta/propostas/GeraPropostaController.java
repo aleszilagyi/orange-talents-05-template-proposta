@@ -4,13 +4,13 @@ import com.orangetalents.proposta.propostas.encrypt.EncryptEDecrypt;
 import com.orangetalents.proposta.servicosExternos.analiseFinanceira.ConsultaRestricao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
@@ -28,10 +28,11 @@ public class GeraPropostaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity geraProposta(@RequestBody @Valid FormPropostaRequest request, Principal principal) {
+    public ResponseEntity geraProposta(@RequestBody @Valid FormPropostaRequest formRequest, Principal principal, HttpServletRequest request) {
+        String userIp = request.getRemoteAddr();
         String userAgent = principal.getName();
-        String documentoEncodado = encryptEDecrypt.encrypt(request.getDocumento());
-        Proposta proposta = request.converter(userAgent, documentoEncodado);
+        String documentoEncodado = encryptEDecrypt.encrypt(formRequest.getDocumento());
+        Proposta proposta = formRequest.converter(userAgent, userIp, documentoEncodado);
         repository.save(proposta);
 
         String documentoDecodado = encryptEDecrypt.decrypt(proposta.getDocumento());

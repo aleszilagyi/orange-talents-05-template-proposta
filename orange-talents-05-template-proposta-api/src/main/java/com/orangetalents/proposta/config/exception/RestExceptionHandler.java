@@ -23,7 +23,12 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity handleRecursoNotFoundException(ResponseStatusException ex) {
-        return ResponseEntity.status(ex.getStatus()).body(ex.getReason());
+        if (ex.getStatus() == HttpStatus.NOT_FOUND) {
+            return ResponseEntity.status(ex.getStatus()).body(ex.getReason());
+        }
+        ValidationErrorOutputDto validationErrors = new ValidationErrorOutputDto();
+        validationErrors.addError(ex.getReason());
+        return ResponseEntity.status(ex.getStatus()).body(validationErrors);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
