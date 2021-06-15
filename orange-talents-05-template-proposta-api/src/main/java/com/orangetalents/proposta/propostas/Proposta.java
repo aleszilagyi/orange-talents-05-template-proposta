@@ -21,6 +21,8 @@ public class Proposta {
     @NotBlank
     private String userIp;
     @NotBlank
+    private String userId;
+    @NotBlank
     private String userAgent;
     @NotBlank
     private String documento;
@@ -49,9 +51,10 @@ public class Proposta {
     public Proposta() {
     }
 
-    public Proposta(String userAgent, String userIp, String documento, String email, String nome, String sobrenome, Endereco endereco, BigDecimal salario) {
-        this.userAgent = userAgent;
+    public Proposta(String userIp, String userId, String userAgent, String documento, String email, String nome, String sobrenome, Endereco endereco, BigDecimal salario) {
         this.userIp = userIp;
+        this.userId = userId;
+        this.userAgent = userAgent;
         this.documento = documento;
         this.email = email;
         this.nome = nome;

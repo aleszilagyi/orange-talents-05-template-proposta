@@ -13,6 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @PropertySource("classpath:application.properties")
 public class CustomErrorDecoder implements ErrorDecoder {

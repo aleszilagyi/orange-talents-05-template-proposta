@@ -5,6 +5,7 @@ import com.orangetalents.proposta.propostas.Proposta;
 import com.orangetalents.proposta.propostas.PropostaRepository;
 import com.orangetalents.proposta.propostas.StatusAnalise;
 import feign.FeignException;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class ConsultaCartaoScheduler {
     @Autowired
     private ConsultaCartao consultaCartao;
 
+    @Timed(value = "consulta_proposta_aberta", longTask = true)
     @Scheduled(fixedRate = 5000)
     @Modifying
     @Transactional

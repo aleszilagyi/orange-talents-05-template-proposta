@@ -39,4 +39,20 @@ public class BloqueioCartao {
         this.idCartao = idCartao;
         this.statusBloqueio = statusBloqueio;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getIdCartao() {
+        return idCartao;
+    }
+
+    public StatusBloqueio getStatusBloqueio() {
+        return statusBloqueio;
+    }
+
+    public LocalDateTime getMomentoCriaco() {
+        return momentoCriaco;
+    }
 }

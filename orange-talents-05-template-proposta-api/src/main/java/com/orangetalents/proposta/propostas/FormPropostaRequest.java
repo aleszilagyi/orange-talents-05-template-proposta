@@ -37,8 +37,8 @@ public class FormPropostaRequest {
         this.salario = salario;
     }
 
-    public Proposta converter(String userAgent, String userIp, String documentoEncodado) {
-        return new Proposta(userAgent, userIp, documentoEncodado, email, nome, sobrenome, endereco.converter(), salario);
+    public Proposta converter(String userAgent, String userId, String userIp, String documentoEncodado) {
+        return new Proposta(userAgent, userId, userIp, documentoEncodado, email, nome, sobrenome, endereco.converter(), salario);
     }
 
     public String getDocumento() {
