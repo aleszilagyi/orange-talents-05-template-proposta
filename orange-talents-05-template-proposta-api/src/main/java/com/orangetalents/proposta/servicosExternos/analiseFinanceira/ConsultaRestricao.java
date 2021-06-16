@@ -2,6 +2,7 @@ package com.orangetalents.proposta.servicosExternos.analiseFinanceira;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.orangetalents.proposta.config.encrypt.EncryptEDecrypt;
 import com.orangetalents.proposta.config.exception.UsuarioComRestricaoException;
 import com.orangetalents.proposta.config.exception.httpException.ErroInternoException;
 import com.orangetalents.proposta.propostas.StatusAnalise;
@@ -11,17 +12,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class ConsultaRestricao {
     @Autowired
     private ConsultaDadosSolicitante consultaDadosSolicitante;
+    @Autowired
+    private EncryptEDecrypt encryptEDecrypt;
 
-    public StatusAnalise consulta(String documento, String nome, UUID propostaId) {
-        FormAnaliseFinanceira analiseDeRestricaoRequest = new FormAnaliseFinanceira(documento, nome, propostaId.toString());
-
+    public StatusAnalise consulta(String documento, String nomeCompleto, String idProposta) {
         try {
+            String documentoDecodado = encryptEDecrypt.decrypt(documento);
+            FormAnaliseFinanceira analiseDeRestricaoRequest = new FormAnaliseFinanceira(documentoDecodado, nomeCompleto, idProposta);
+
             ResponseEntity<FormAnaliseFinanceira> restricaoResponse = consultaDadosSolicitante.consultaRestricaoSolicitante(analiseDeRestricaoRequest);
             return restricaoResponse.getBody().getResultadoSolicitacao().normalizaStatus();
         } catch (UsuarioComRestricaoException e) {

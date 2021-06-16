@@ -1,5 +1,6 @@
 package com.orangetalents.proposta.propostas;
 
+import com.orangetalents.proposta.config.encrypt.EncryptEDecrypt;
 import com.orangetalents.proposta.config.validacoes.CpfOrCnpj;
 import com.orangetalents.proposta.config.validacoes.UniqueDocumento;
 import com.orangetalents.proposta.propostas.endereco.FormEnderecoRequest;
@@ -29,7 +30,7 @@ public class FormPropostaRequest {
     private BigDecimal salario;
 
     public FormPropostaRequest(String documento, String email, String nome, String sobrenome, FormEnderecoRequest endereco, BigDecimal salario) {
-        this.documento = documento;
+        this.documento = documento.replace("-", "").replace(".", "");
         this.email = email;
         this.nome = nome;
         this.sobrenome = sobrenome;
@@ -37,8 +38,10 @@ public class FormPropostaRequest {
         this.salario = salario;
     }
 
-    public Proposta converter(String userAgent, String userId, String userIp, String documentoEncodado) {
-        return new Proposta(userAgent, userId, userIp, documentoEncodado, email, nome, sobrenome, endereco.converter(), salario);
+    public Proposta converter(String userAgent, String userId, String userIp, EncryptEDecrypt encryptEDecrypt) {
+        this.documento = encryptEDecrypt.encrypt(documento);
+        this.email = encryptEDecrypt.encrypt(email);
+        return new Proposta(userAgent, userId, userIp, documento, email, nome, sobrenome, endereco.converter(), salario);
     }
 
     public String getDocumento() {

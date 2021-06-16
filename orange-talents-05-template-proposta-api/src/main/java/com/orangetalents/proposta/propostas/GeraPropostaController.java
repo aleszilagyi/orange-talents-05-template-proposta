@@ -1,7 +1,7 @@
 package com.orangetalents.proposta.propostas;
 
+import com.orangetalents.proposta.config.encrypt.EncryptEDecrypt;
 import com.orangetalents.proposta.config.metrics.PropostasMetrics;
-import com.orangetalents.proposta.propostas.encrypt.EncryptEDecrypt;
 import com.orangetalents.proposta.servicosExternos.analiseFinanceira.ConsultaRestricao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,15 +34,14 @@ public class GeraPropostaController {
     public ResponseEntity geraProposta(@RequestBody @Valid FormPropostaRequest formRequest, Principal principal, HttpServletRequest request, @RequestHeader(value = "User-Agent") String userAgent) {
         String userIp = request.getRemoteAddr();
         String userId = principal.getName();
-        String documentoEncodado = encryptEDecrypt.encrypt(formRequest.getDocumento());
-        Proposta proposta = formRequest.converter(userAgent, userId, userIp, documentoEncodado);
+        Proposta proposta = formRequest.converter(userAgent, userId, userIp, encryptEDecrypt);
         repository.save(proposta);
 
         logger.info(String.format("Proposta criada com sucesso: {documento: %s, propostaId: %s, salario: %s}", proposta.getDocumento(), proposta.getId().toString(), proposta.getSalario()));
+
         propostasMetrics.propostasContador();
 
-        String documentoDecodado = encryptEDecrypt.decrypt(proposta.getDocumento());
-        StatusAnalise statusAnalise = consultaRestricao.consulta(documentoDecodado, proposta.getNomeCompleto(), proposta.getId());
+        StatusAnalise statusAnalise = consultaRestricao.consulta(proposta.getDocumento(), proposta.getNomeCompleto(), proposta.getId().toString());
         proposta.atualizaStatusAnalise(statusAnalise);
 
         URI uriRetorno = UriComponentsBuilder.fromPath("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();

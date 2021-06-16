@@ -1,11 +1,12 @@
-package com.orangetalents.proposta.propostas.encrypt;
+package com.orangetalents.proposta.config.encrypt;
 
 import com.orangetalents.proposta.config.exception.httpException.ErroInternoException;
+import com.orangetalents.proposta.propostas.ConsultaPropostaController;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -24,6 +25,7 @@ public class EncryptEDecrypt {
     private final String algorithm = "AES";
     private final String cipherAlgorithm = "AES/CBC/PKCS5PADDING";
     private final Charset charset = StandardCharsets.UTF_8;
+    private final Logger logger = LoggerFactory.getLogger(ConsultaPropostaController.class);
 
     public String encrypt(String value) {
         try {
@@ -57,11 +59,21 @@ public class EncryptEDecrypt {
         }
     }
 
-    public String ofuscarDocumento(String documentoEncryptado) {
-        String documento = decrypt(documentoEncryptado);
-        if (documento.length() == 11) {
-            return "******" + documento.substring(6, 11);
+    public String ofuscar(String input) {
+        String documento = decrypt(input);
+        if (documento.contains("@")) {
+            return documento.replaceAll("(?<=.)[^@](?=[^@]*?@)|(?:(?<=@.)|(?!^)\\\\G(?=[^@]*$)).(?=.*\\\\.)", "*");
         }
-        return "*******" + documento.substring(7, 14);
+        if (documento.matches("([0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4})")) {
+            return documento.replaceAll(".(?=.{4})", "*");
+        }
+        if (documento.length() == 11) {
+            return documento.replaceAll(".(?=.{5})", "*");
+        }
+        if (documento.length() == 14) {
+            return documento.replaceAll(".(?=.{7})", "*");
+        }
+        logger.warn("Falha no formato do documento: " + documento);
+        throw new ErroInternoException();
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 @Component
 public class RetornaTipoDeStatus {
 
-    public HttpStatus statusErroDeValidacao(BindException ex) {
+    public HttpStatus statusErroDeValidacao(MethodArgumentNotValidException ex) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
 

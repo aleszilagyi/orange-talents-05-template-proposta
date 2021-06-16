@@ -12,6 +12,9 @@ public class ValidationErrorOutputDto {
     private List<String> globalErrorMessages = new ArrayList<>();
     private List<FieldErrorOutputDto> fieldErrors = new ArrayList<>();
 
+    public ValidationErrorOutputDto() {
+    }
+
     public void addError(String message) {
         globalErrorMessages.add(message);
     }
@@ -19,17 +22,6 @@ public class ValidationErrorOutputDto {
     public void addFieldError(String field, String message) {
         FieldErrorOutputDto fieldError = new FieldErrorOutputDto(field, message);
         fieldErrors.add(fieldError);
-    }
-
-    public List<String> getGlobalErrorMessages() {
-        return globalErrorMessages;
-    }
-
-    public List<FieldErrorOutputDto> getFieldErrors() {
-        return fieldErrors;
-    }
-
-    public ValidationErrorOutputDto() {
     }
 
     public ValidationErrorOutputDto(MessageSource messageSource, List<ObjectError> globalErrors, List<FieldError> fieldErrors) {
@@ -42,5 +34,14 @@ public class ValidationErrorOutputDto {
 
     private String getErrorMessage(MessageSource messageSource, ObjectError error) {
         return messageSource.getMessage(error, LocaleContextHolder.getLocale());
+    }
+
+
+    public List<String> getGlobalErrorMessages() {
+        return globalErrorMessages;
+    }
+
+    public List<FieldErrorOutputDto> getFieldErrors() {
+        return fieldErrors;
     }
 }

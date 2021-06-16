@@ -1,5 +1,6 @@
 package com.orangetalents.proposta.config.exception;
 
+import com.orangetalents.proposta.config.exception.httpException.ValidacoesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestControllerAdvice
@@ -34,7 +36,6 @@ public class RestExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ValidationErrorOutputDto> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         String message = "Erro de formatação da requisição";
-
         ValidationErrorOutputDto validationErrors = new ValidationErrorOutputDto();
         validationErrors.addError(message);
 
@@ -51,6 +52,28 @@ public class RestExceptionHandler {
         HttpStatus status = retornaTipoDeStatus.statusErroDeValidacao(ex);
 
         return ResponseEntity.status(status).body(errorDto);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity handleConstraintViolationException(ConstraintViolationException ex) {
+        ValidationErrorOutputDto validationErrorOutputDto = new ValidationErrorOutputDto();
+
+        ex.getConstraintViolations().stream()
+                .forEach(violation -> {
+                    validationErrorOutputDto.addFieldError(violation.getPropertyPath().toString(), violation.getMessage());
+                });
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationErrorOutputDto);
+    }
+
+    @ExceptionHandler(ValidacoesException.class)
+    public ResponseEntity handleValidacoesException(ValidacoesException ex) {
+        ValidationErrorOutputDto validationErrorOutputDto = new ValidationErrorOutputDto();
+
+        ex.getConstraintViolations().stream()
+                .forEach(violation -> {
+                    validationErrorOutputDto.addFieldError(violation.getPropertyPath().toString(), violation.getMessage());
+                });
+        return ResponseEntity.status(ex.getStatus()).body(validationErrorOutputDto);
     }
 }
 

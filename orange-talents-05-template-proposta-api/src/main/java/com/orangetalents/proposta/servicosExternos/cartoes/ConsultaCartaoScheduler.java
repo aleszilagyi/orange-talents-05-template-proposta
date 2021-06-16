@@ -4,12 +4,13 @@ import com.orangetalents.proposta.config.exception.httpException.ErroInternoExce
 import com.orangetalents.proposta.propostas.Proposta;
 import com.orangetalents.proposta.propostas.PropostaRepository;
 import com.orangetalents.proposta.propostas.StatusAnalise;
+import com.orangetalents.proposta.config.encrypt.EncryptEDecrypt;
+import com.orangetalents.proposta.servicosExternos.cartoes.detalhes.InformacoesCartaoResponse;
 import feign.FeignException;
 import io.micrometer.core.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +23,10 @@ public class ConsultaCartaoScheduler {
     private PropostaRepository propostaRepository;
     @Autowired
     private ConsultaCartao consultaCartao;
+    @Autowired
+    private EncryptEDecrypt encryptEDecrypt;
 
-    @Timed(value = "consulta_proposta_aberta", longTask = true)
+    @Timed(value = "consulta_proposta_aberta", extraTags = {"emissora", "Mastercard", "banco", "Itau"}, longTask = true)
     @Scheduled(fixedRate = 5000)
     @Modifying
     @Transactional
@@ -34,12 +37,11 @@ public class ConsultaCartaoScheduler {
         }
     }
 
-    @Async
     private void salvaNumeroCartao(List<Proposta> propostaEmAberto) {
         try {
             propostaEmAberto.forEach(proposta -> {
                 ResponseEntity<InformacoesCartaoResponse> informacoesCartao = consultaCartao.consultaRestricaoSolicitante(proposta.getId().toString());
-                String numeroCartao = informacoesCartao.getBody().getId();
+                String numeroCartao = encryptEDecrypt.encrypt(informacoesCartao.getBody().getId());
                 proposta.atualizaNumeroCartao(numeroCartao);
             });
         } catch (FeignException e) {

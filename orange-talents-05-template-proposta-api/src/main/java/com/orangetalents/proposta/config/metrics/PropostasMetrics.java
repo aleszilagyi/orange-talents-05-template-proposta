@@ -31,4 +31,8 @@ public class PropostasMetrics {
         Counter contadorDePropostasCriadas = this.meterRegistry.counter("proposta_criada", tags);
         contadorDePropostasCriadas.increment();
     }
+
+    public Timer consultaPropostaTimer(){
+        return this.meterRegistry.timer("consulta_proposta", criaTags());
+    }
 }

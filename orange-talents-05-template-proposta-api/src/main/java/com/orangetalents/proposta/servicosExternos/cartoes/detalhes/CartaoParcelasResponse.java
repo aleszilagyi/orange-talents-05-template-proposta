@@ -1,4 +1,4 @@
-package com.orangetalents.proposta.servicosExternos.cartoes;
+package com.orangetalents.proposta.servicosExternos.cartoes.detalhes;
 
 import java.math.BigDecimal;
 

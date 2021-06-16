@@ -1,12 +1,12 @@
-package com.orangetalents.proposta.servicosExternos.cartoes;
+package com.orangetalents.proposta.servicosExternos.cartoes.bloquear;
 
 import javax.validation.constraints.NotBlank;
 
-public class SistemaResponsavel {
+public class SistemaResponsavelRequest {
     @NotBlank
     private String sistemaResponsavel;
 
-    public SistemaResponsavel(Object sistemaResponsavel) {
+    public SistemaResponsavelRequest(Object sistemaResponsavel) {
         this.sistemaResponsavel = sistemaResponsavel.getClass().getName();
     }
 

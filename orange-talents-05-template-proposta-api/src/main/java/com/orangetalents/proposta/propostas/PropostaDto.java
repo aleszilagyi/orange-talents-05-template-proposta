@@ -1,5 +1,6 @@
 package com.orangetalents.proposta.propostas;
 
+import com.orangetalents.proposta.config.encrypt.EncryptEDecrypt;
 import com.orangetalents.proposta.propostas.endereco.EnderecoDto;
 
 import java.math.BigDecimal;
@@ -19,16 +20,16 @@ public class PropostaDto {
     private LocalDateTime momentoCriacao;
     private LocalDateTime ultimaAtualizacao;
 
-    public PropostaDto(Proposta proposta, String documentoDecrypted) {
+    public PropostaDto(Proposta proposta, EncryptEDecrypt encryptEDecrypt) {
         this.id = proposta.getId();
-        this.documento = documentoDecrypted;
-        this.email = proposta.getEmail();
+        this.documento = encryptEDecrypt.ofuscar(proposta.getDocumento());
+        this.email = encryptEDecrypt.ofuscar(proposta.getEmail());
         this.nome = proposta.getNome();
         this.sobrenome = proposta.getSobrenome();
         this.endereco = new EnderecoDto(proposta.getEndereco());
         this.salario = proposta.getSalario();
         this.statusAnalise = proposta.getStatusAnalise();
-        this.numeroCartao = proposta.getNumeroCartao();
+        this.numeroCartao = encryptEDecrypt.decrypt(proposta.getNumeroCartao());
         this.momentoCriacao = proposta.getMomentoCriacao();
         this.ultimaAtualizacao = proposta.getUltimaAtualizacao();
     }

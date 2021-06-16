@@ -1,5 +1,8 @@
 package com.orangetalents.proposta.config.validacoes;
 
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Configurable;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -7,6 +10,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
+@Configurable(autowire = Autowire.BY_TYPE, dependencyCheck = true)
 public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Object> {
     private String domainAttribute;
     private Class<?> aClass;

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "bloqueio_cartao")
+@Table
 public class BloqueioCartao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,9 +18,11 @@ public class BloqueioCartao {
     @NotBlank
     private String userIp;
     @NotBlank
+    private String userId;
+    @NotBlank
     private String userAgent;
     @NotBlank
-    private String idCartao;
+    private String numCartao;
     @NotNull
     @Enumerated(EnumType.STRING)
     private StatusBloqueio statusBloqueio;
@@ -33,10 +35,11 @@ public class BloqueioCartao {
     public BloqueioCartao() {
     }
 
-    public BloqueioCartao(String userIp, String userAgent, String idCartao, StatusBloqueio statusBloqueio) {
+    public BloqueioCartao(String userIp, String userId, String userAgent, String numCartao, StatusBloqueio statusBloqueio) {
         this.userIp = userIp;
+        this.userId = userId;
         this.userAgent = userAgent;
-        this.idCartao = idCartao;
+        this.numCartao = numCartao;
         this.statusBloqueio = statusBloqueio;
     }
 
@@ -44,8 +47,8 @@ public class BloqueioCartao {
         return id;
     }
 
-    public String getIdCartao() {
-        return idCartao;
+    public String getNumCartao() {
+        return numCartao;
     }
 
     public StatusBloqueio getStatusBloqueio() {
@@ -54,5 +57,13 @@ public class BloqueioCartao {
 
     public LocalDateTime getMomentoCriaco() {
         return momentoCriaco;
+    }
+
+    public LocalDateTime getUltimaAtualizacao() {
+        return ultimaAtualizacao;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 }
