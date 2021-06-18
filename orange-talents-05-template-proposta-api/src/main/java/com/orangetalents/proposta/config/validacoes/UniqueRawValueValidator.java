@@ -11,7 +11,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
 @Configurable(autowire = Autowire.BY_TYPE, dependencyCheck = true)
-public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Object> {
+public class UniqueRawValueValidator implements ConstraintValidator<UniqueRawValue, Object> {
     private String domainAttribute;
     private Class<?> aClass;
 
@@ -19,7 +19,7 @@ public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Ob
     private EntityManager manager;
 
     @Override
-    public void initialize(UniqueValue params) {
+    public void initialize(UniqueRawValue params) {
         domainAttribute = params.fieldName();
         aClass = params.domainClass();
     }

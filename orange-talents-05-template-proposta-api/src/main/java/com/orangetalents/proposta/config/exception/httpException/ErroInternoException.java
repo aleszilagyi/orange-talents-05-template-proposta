@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class ErroInternoException extends ResponseStatusException {
     public ErroInternoException() {
-        super(HttpStatus.BAD_REQUEST, "Desculpe, erro nosso. Tente novamente.");
+        super(HttpStatus.BAD_REQUEST, "Desculpe, ocorreu um erro. Tente novamente.");
     }
 }

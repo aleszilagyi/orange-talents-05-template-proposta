@@ -1,8 +1,8 @@
 package com.orangetalents.proposta.servicosExternos;
 
-import com.orangetalents.proposta.config.exception.httpException.OperacaoNaoPodeSerRealizadaException;
 import com.orangetalents.proposta.config.exception.UsuarioComRestricaoException;
 import com.orangetalents.proposta.config.exception.httpException.ErroInternoException;
+import com.orangetalents.proposta.config.exception.httpException.OperacaoNaoPodeSerRealizadaException;
 import com.orangetalents.proposta.config.exception.httpException.RecursoNotFoundException;
 import feign.FeignException;
 import feign.Response;
@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 
@@ -55,6 +54,10 @@ public class CustomErrorDecoder implements ErrorDecoder {
         if (response.status() == 422 && response.request().url().contains(cartaoUrl) && response.request().url().contains("/avisos")) {
             logger.warn("Retorno da API: " + response.body().toString());
             return new OperacaoNaoPodeSerRealizadaException("Aviso de viagem já cadastrado para o cartão");
+        }
+        if (response.status() == 422 && response.request().url().contains(cartaoUrl) && response.request().url().contains("/carteiras")) {
+            logger.warn("Retorno da API: " + response.body().toString());
+            return new OperacaoNaoPodeSerRealizadaException("Carteira já cadastrada para o cartão");
         } else return defaultErrorDecoder.decode(s, response);
     }
 }

@@ -1,17 +1,17 @@
 package com.orangetalents.proposta.servicosExternos.cartoes.detalhes;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class CartaoAvisosResponse {
-    private LocalDateTime validoAte;
+    private LocalDate validoAte;
     private String destino;
 
-    public CartaoAvisosResponse(LocalDateTime validoAte, String destino) {
+    public CartaoAvisosResponse(LocalDate validoAte, String destino) {
         this.validoAte = validoAte;
         this.destino = destino;
     }
 
-    public LocalDateTime getValidoAte() {
+    public LocalDate getValidoAte() {
         return validoAte;
     }
 

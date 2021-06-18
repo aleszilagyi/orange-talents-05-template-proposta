@@ -2,9 +2,11 @@ package com.orangetalents.proposta.propostas;
 
 import com.orangetalents.proposta.config.encrypt.EncryptEDecrypt;
 import com.orangetalents.proposta.config.validacoes.CpfOrCnpj;
-import com.orangetalents.proposta.config.validacoes.UniqueDocumento;
+import com.orangetalents.proposta.config.validacoes.UniqueEncryptedValue;
+import com.orangetalents.proposta.config.validacoes.payload.PayloadUnprocessableEntityApi;
 import com.orangetalents.proposta.propostas.endereco.FormEnderecoRequest;
 
+import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -14,7 +16,7 @@ import java.math.BigDecimal;
 public class FormPropostaRequest {
     @CpfOrCnpj
     @NotBlank
-    @UniqueDocumento
+    @UniqueEncryptedValue(payload = {PayloadUnprocessableEntityApi.class}, domainClass = Proposta.class, fieldName = "documento")
     private String documento;
     @NotBlank
     @Email
@@ -24,6 +26,7 @@ public class FormPropostaRequest {
     @NotBlank
     private String sobrenome;
     @NotNull
+    @Valid
     private FormEnderecoRequest endereco;
     @NotNull
     @DecimalMin("0.00")

@@ -4,12 +4,12 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-@Constraint(validatedBy = {CartaoJaRegistradoValidator.class})
+@Constraint(validatedBy = {UniqueRawValueValidator.class})
 @Target({ElementType.FIELD, ElementType.TYPE_USE, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface CartaoJaRegistrado {
-    String message() default "{fieldName} fornecido já está registrado no sistema";
+public @interface UniqueRawValue {
+    String message() default "{fieldName} fornecido já está cadastrado";
 
     Class<?>[] groups() default {};
 

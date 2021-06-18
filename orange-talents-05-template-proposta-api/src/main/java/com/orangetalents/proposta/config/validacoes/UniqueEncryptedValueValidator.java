@@ -1,8 +1,9 @@
 package com.orangetalents.proposta.config.validacoes;
 
 import com.orangetalents.proposta.config.encrypt.EncryptEDecrypt;
-import com.orangetalents.proposta.config.exception.httpException.OperacaoNaoPodeSerRealizadaException;
+import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,30 +12,28 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
-public class CartaoJaRegistradoValidator implements ConstraintValidator<CartaoJaRegistrado, String> {
+@Configurable(autowire = Autowire.BY_TYPE, dependencyCheck = true)
+public class UniqueEncryptedValueValidator implements ConstraintValidator<UniqueEncryptedValue, String> {
     private String domainAttribute;
     private Class<?> aClass;
-
-    @PersistenceContext
-    private EntityManager manager;
     @Autowired
     private EncryptEDecrypt encryptEDecrypt;
+    @PersistenceContext
+    private EntityManager manager;
 
     @Override
-    public void initialize(CartaoJaRegistrado constraintAnnotation) {
-        domainAttribute = constraintAnnotation.fieldName();
-        aClass = constraintAnnotation.domainClass();
+    public void initialize(UniqueEncryptedValue params) {
+        domainAttribute = params.fieldName();
+        aClass = params.domainClass();
     }
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        String cartao = encryptEDecrypt.encrypt(s);
+        String documentoEncrypted = encryptEDecrypt.encrypt(s);
         Query query = manager.createQuery("select 1 from " + aClass.getName() + " where " + domainAttribute + "=:value");
-        query.setParameter("value", cartao);
+        query.setParameter("value", documentoEncrypted);
         List<?> list = query.getResultList();
 
-        if (list.isEmpty()) return true;
-
-        else throw new OperacaoNaoPodeSerRealizadaException(domainAttribute + " já está registrado no sistema");
+        return list.isEmpty();
     }
 }

@@ -16,11 +16,9 @@ import java.time.LocalDate;
 public class AvisarViagem {
     @Autowired
     private ConsultaCartao consultaCartao;
-    @Autowired
-    private EncryptEDecrypt encryptEDecrypt;
     private final Logger logger = LoggerFactory.getLogger(AvisarViagem.class);
 
-    public void avisar(String idCartaoEncrypted, String destino, LocalDate validoAte) {
+    public void avisar(String idCartaoEncrypted, String destino, LocalDate validoAte, EncryptEDecrypt encryptEDecrypt) {
         try {
             String idCartao = encryptEDecrypt.decrypt(idCartaoEncrypted);
             AvisarViagemRequest request = new AvisarViagemRequest(destino, validoAte);

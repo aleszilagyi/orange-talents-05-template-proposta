@@ -2,23 +2,27 @@ package com.orangetalents.proposta.propostas;
 
 import com.orangetalents.proposta.config.encrypt.EncryptEDecrypt;
 import com.orangetalents.proposta.config.metrics.PropostasMetrics;
+import com.orangetalents.proposta.config.validacoes.outros.ForcarValidacao;
 import com.orangetalents.proposta.servicosExternos.analiseFinanceira.ConsultaRestricao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.net.URI;
 import java.security.Principal;
 
+@Validated
 @RestController
 @RequestMapping("/api/proposta")
 public class GeraPropostaController {
+    @Autowired
+    private ForcarValidacao forcarValidacao;
     @Autowired
     private PropostaRepository repository;
     @Autowired
@@ -31,9 +35,13 @@ public class GeraPropostaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity geraProposta(@RequestBody @Valid FormPropostaRequest formRequest, Principal principal, HttpServletRequest request, @RequestHeader(value = "User-Agent") String userAgent) {
+    public ResponseEntity geraProposta(@RequestBody FormPropostaRequest formRequest,
+                                       Principal principal, HttpServletRequest request,
+                                       @RequestHeader(value = "User-Agent") String userAgent) {
         String userIp = request.getRemoteAddr();
         String userId = principal.getName();
+        forcarValidacao.validateObjeto(formRequest);
+
         Proposta proposta = formRequest.converter(userAgent, userId, userIp, encryptEDecrypt);
         repository.save(proposta);
 

@@ -4,12 +4,12 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-@Constraint(validatedBy = {IsUUIDValidator.class})
-@Target({ElementType.TYPE_PARAMETER, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.FIELD, ElementType.TYPE_USE, ElementType.PARAMETER})
+@Constraint(validatedBy = {UniqueEncryptedValueValidator.class})
+@Target({ElementType.FIELD, ElementType.TYPE_PARAMETER, ElementType.TYPE_USE, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface IsUUID {
-    String message() default "Proposta fornecida não existe";
+public @interface UniqueEncryptedValue {
+    String message() default "{fieldName} fornecido já está cadastrado";
 
     Class<?>[] groups() default {};
 

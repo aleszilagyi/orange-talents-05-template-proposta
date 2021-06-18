@@ -2,6 +2,8 @@ package com.orangetalents.proposta.servicosExternos.cartoes;
 
 import com.orangetalents.proposta.servicosExternos.cartoes.bloquear.BloqueioResponse;
 import com.orangetalents.proposta.servicosExternos.cartoes.bloquear.SistemaResponsavelRequest;
+import com.orangetalents.proposta.servicosExternos.cartoes.carteira.CarteiraRequest;
+import com.orangetalents.proposta.servicosExternos.cartoes.carteira.CarteiraResponse;
 import com.orangetalents.proposta.servicosExternos.cartoes.detalhes.InformacoesCartaoResponse;
 import com.orangetalents.proposta.servicosExternos.cartoes.viagem.AvisarViagemRequest;
 import com.orangetalents.proposta.servicosExternos.cartoes.viagem.AvisoViagemResponse;
@@ -22,4 +24,7 @@ public interface ConsultaCartao {
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/cartoes/{id}/avisos", consumes = "application/json")
     ResponseEntity<AvisoViagemResponse> avisarViagem(@PathVariable(value = "id") String idCartao, @RequestBody AvisarViagemRequest avisarViagemRequest);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/api/cartoes/{id}/carteiras", consumes = "application/json")
+    ResponseEntity<CarteiraResponse> cadastrarCarteira(@PathVariable(value = "id") String idCartao, @RequestBody CarteiraRequest carteiraRequest);
 }

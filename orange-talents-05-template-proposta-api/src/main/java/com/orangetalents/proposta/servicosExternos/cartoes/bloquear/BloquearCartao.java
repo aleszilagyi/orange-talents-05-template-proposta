@@ -15,13 +15,11 @@ import org.springframework.stereotype.Component;
 public class BloquearCartao {
     @Autowired
     private ConsultaCartao consultaCartao;
-    @Autowired
-    private EncryptEDecrypt encryptEDecrypt;
     private final Logger logger = LoggerFactory.getLogger(BloquearCartao.class);
 
     private final SistemaResponsavelRequest sistemaResponsavelRequest = new SistemaResponsavelRequest(this);
 
-    public StatusBloqueio bloquear(String userIp, String userId, String userAgent, String idCartaoEncrypted) {
+    public StatusBloqueio bloquear(String userIp, String userId, String userAgent, String idCartaoEncrypted, EncryptEDecrypt encryptEDecrypt) {
         try {
             String idCartao = encryptEDecrypt.decrypt(idCartaoEncrypted);
             ResponseEntity<BloqueioResponse> response = consultaCartao.bloquearCartao(idCartao, sistemaResponsavelRequest);
