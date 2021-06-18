@@ -28,7 +28,7 @@ public class IsUUIDValidator implements ConstraintValidator<IsUUID, String> {
         UUID id = null;
         try {
             id = UUID.fromString(s);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RecursoNotFoundException();
         }

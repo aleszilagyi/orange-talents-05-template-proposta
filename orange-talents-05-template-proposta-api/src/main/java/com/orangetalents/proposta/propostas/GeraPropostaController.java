@@ -4,6 +4,7 @@ import com.orangetalents.proposta.config.encrypt.EncryptEDecrypt;
 import com.orangetalents.proposta.config.metrics.PropostasMetrics;
 import com.orangetalents.proposta.config.validacoes.outros.ForcarValidacao;
 import com.orangetalents.proposta.servicosExternos.analiseFinanceira.ConsultaRestricao;
+import io.opentracing.Tracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class GeraPropostaController {
     private EncryptEDecrypt encryptEDecrypt;
     @Autowired
     private PropostasMetrics propostasMetrics;
+    @Autowired
+    private Tracer tracer;
     private final Logger logger = LoggerFactory.getLogger(GeraPropostaController.class);
 
     @PostMapping
@@ -51,6 +54,9 @@ public class GeraPropostaController {
 
         StatusAnalise statusAnalise = consultaRestricao.consulta(proposta.getDocumento(), proposta.getNomeCompleto(), proposta.getId().toString());
         proposta.atualizaStatusAnalise(statusAnalise);
+
+        tracer.activeSpan().setTag("idUser", userId);
+        tracer.activeSpan().setBaggageItem("cartao-num", proposta.getNumeroCartao());
 
         URI uriRetorno = UriComponentsBuilder.fromPath("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
         return ResponseEntity.created(uriRetorno).build();

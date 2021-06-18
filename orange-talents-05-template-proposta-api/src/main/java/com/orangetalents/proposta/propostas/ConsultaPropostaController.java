@@ -5,6 +5,7 @@ import com.orangetalents.proposta.config.metrics.PropostasMetrics;
 import com.orangetalents.proposta.config.validacoes.IsUUID;
 import com.orangetalents.proposta.config.validacoes.payload.PayloadUnprocessableEntityApi;
 import io.micrometer.core.annotation.Timed;
+import io.opentracing.Tracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,10 @@ public class ConsultaPropostaController {
     private EncryptEDecrypt encryptEDecrypt;
     @Autowired
     private PropostasMetrics propostasMetrics;
+    @Autowired
+    private Tracer tracer;
     private final Logger logger = LoggerFactory.getLogger(ConsultaPropostaController.class);
+
 
     @GetMapping("/{id}")
     @Timed(value = "consulta_proposta", extraTags = {"emissora", "Mastercard", "banco", "Itau"})
@@ -38,6 +42,9 @@ public class ConsultaPropostaController {
 
         //a ferramenta de decrypt está indo para ao DTO porque eu preciso saber o número do cartão nos testes com a aplicação rodando
         PropostaDto propostaDto = new PropostaDto(proposta, encryptEDecrypt);
+
+        tracer.activeSpan().setTag("propostaId", idProposta);
+        tracer.activeSpan().setBaggageItem("cartao-num", proposta.getNumeroCartao());
         return ResponseEntity.status(HttpStatus.OK).body(propostaDto);
     }
 
