@@ -17,3 +17,12 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['host.docker.internal:8081']
+
+    oauth2:
+      client_id: 'propostas-prometheus'
+      client_secret: 'c6345311-a83c-45b4-8415-c09a0392be3e'
+
+      scopes:
+        - 'propostas-prometheus:read'
+
+      token_url: http://host.docker.internal:8080/auth/realms/cartoes/protocol/openid-connect/token
