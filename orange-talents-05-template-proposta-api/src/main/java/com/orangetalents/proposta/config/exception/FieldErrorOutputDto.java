@@ -8,8 +8,15 @@ public class FieldErrorOutputDto {
     }
 
     public FieldErrorOutputDto(String field, String message) {
-        this.field = field;
+        this.field = limpaField(field);
         this.message = message;
+    }
+
+    private String limpaField(String field) {
+        return field.replaceAll("\\[.*?\\]", "")
+                .replaceAll("\\<.*?\\>", "")
+                .replaceAll("\\.$", "")
+                .replaceAll("\\.", "_");
     }
 
     public String getField() {

@@ -38,7 +38,8 @@ services:
     image: jboss/keycloak
     ports:
       - 18443:8443
-      - 18080:8080
+      - 8080:8080
+#      - 18080:8080
       - 19990:9990
     depends_on:
       # Just a delay to wait for postgres! This is not recommended!
@@ -51,6 +52,7 @@ services:
       - analise
       - transacoes
       - postgres
+      - propostas
     environment:
       DB_VENDOR: postgres
       DB_ADDR: postgres
@@ -61,6 +63,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
       POSTGRES_PORT_5432_TCP_ADDR: 127.0.0.1
+      KEYCLOAK_FRONTEND_URL: http://keycloak:8080/auth
 
   analise:
     image: 'zupacademy/analise-financeira'
@@ -110,6 +113,7 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-volume:/etc/prometheus/
     network_mode: bridge
     ports:
@@ -146,33 +150,24 @@ services:
       POSTGRES_DB: proposta_db
       POSTGRES_HOST: postgres
 
-#  propostas:
-#    image: 'orangetalents-proposta'
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      RESTRICAO_URL: http://analise:9999
-#      CARTAO_URL: http://contas:8888
-#      PROPOSTA_DB: jdbc:postgresql://proposta-postgres:5432/postgres
-#      SERVER_PORT: 8080
-#    depends_on:
-#      - proposta-postgres
-
-  biometria-postgres:
-    image: 'postgres:alpine'
-    volumes:
-      - biometria-postgres-volume:/var/lib/postgresql/data
+  propostas:
+    image: 'orangetalents-proposta'
     ports:
-      - 5434:5432
+      - 8081:8081
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: proposta_db
-      POSTGRES_HOST: postgres
+      RESTRICAO_URL: http://analise:9999
+      CARTAO_URL: http://contas:8888
+      PROPOSTA_DB: jdbc:postgresql://proposta-postgres:5432/postgres
+      APP_NAME: 'propostas'
+      SERVER_PORT: 8081
+      KEYCLOAK_ISSUER_URI: http://keycloak:8080/auth/realms/cartoes
+      KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/cartoes/protocol/openid-connect/certs
+      JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+    depends_on:
+      - proposta-postgres
 
 volumes:
   grafana-volume:
   prometheus-volume:
   postgres-volume:
   proposta-postgres-volume:
-  biometria-postgres-volume:

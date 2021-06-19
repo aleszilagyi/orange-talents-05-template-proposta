@@ -14,8 +14,6 @@ import java.util.Set;
 @Component
 public class ForcarValidacao {
     @Autowired
-    private ConsultaCartao consultaCartao;
-    @Autowired
     private Validator validator;
     private final Logger logger = LoggerFactory.getLogger(ForcarValidacao.class);
 

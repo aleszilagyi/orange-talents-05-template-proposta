@@ -33,7 +33,6 @@ public class ConsultaPropostaController {
     private Tracer tracer;
     private final Logger logger = LoggerFactory.getLogger(ConsultaPropostaController.class);
 
-
     @GetMapping("/{id}")
     @Timed(value = "consulta_proposta", extraTags = {"emissora", "Mastercard", "banco", "Itau"})
     public ResponseEntity consultaProposta(@PathVariable("id") @IsUUID(payload = {PayloadUnprocessableEntityApi.class}, domainClass = Proposta.class, fieldName = "id") String idProposta) {
